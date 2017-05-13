@@ -1,0 +1,58 @@
+//输入矩阵的个数
+#include<stdio.h>
+int s[100][100];
+void Matrixchainorder(int p[],int n)
+{
+    int n1 = n-1;
+    int q,k;
+    int m[n][n];
+    for(int i = 1;i<=n1;i++){
+        m[i][i] = 0;
+    }
+    for(int l = 2;l<=n;l++)
+    {
+        for(int i=1;i<=n-l+1;i++)
+        {
+            int j = i+l-1;
+            m[i][j] = 99999999;
+            for(k = i;k<=j-1;k++)
+            {
+                q = m[i][k] + m[k+1][j] +p[i-1]*p[k]*p[j];
+                if(q<m[i][j])
+                {
+                    m[i][j] = q;
+                    s[i][j] = k;
+                }
+            }
+        }
+    }
+}
+void printoptimalparsens(int i,int j)
+{
+    int ss = s[i][j];
+    if(i == j)
+    {
+        printf("A%d",i);
+    }
+    else
+    {
+        printf("(");
+        printoptimalparsens(i,ss);
+        printoptimalparsens(ss+1,j);
+        printf(")");
+    }
+}
+int main()
+{
+    int n,i;
+    printf("input the number of p\n");
+    scanf("%d",&n);
+    int p[n+1];
+    for(i=0;i<=n;i++)
+    {
+        scanf("%d",&p[i]);
+    }
+    Matrixchainorder(p,n);
+    printoptimalparsens(1,n);
+    return 0;
+}
