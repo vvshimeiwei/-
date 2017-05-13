@@ -1,0 +1,60 @@
+//输入工作的个数以及每个工作的完成时间
+#include<stdio.h>
+struct A{
+	int data;
+	int num;
+};
+int insertionsort(A h[],int n)
+{
+	int n1=n+1;
+	for(int j=2;j<n1;j++)
+	{
+		int key = h[j].data;
+		int i=j-1;
+		while(i>0&&h[i].data>key)
+		{
+			h[i+1].data = h[i].data;
+			//h[i+1].num = h[i].num;
+			//x[i+1] = i;
+			i=i-1;
+		}
+		h[i+1].data = key;
+		//h[i+1].num = h[j].num;
+		//x[i+1] = j;
+	}
+	for(int j=1;j<n1;j++)
+        printf("%d ",h[j].data);
+    printf("\n");
+}
+int schedule(A h[],int n)
+{
+	int n2 = n+1;
+	for(int i=2;i<n2;i++)
+		h[i].data = h[i-1].data+h[i].data;
+}
+int main()
+{
+	/*int h[]={15,8,3,10};
+	int n=4;
+	int x[n];
+	insertionsort(h,n);
+	schedule(h,n);*/
+	int n;
+	scanf("%d",&n);
+	A h[n+1];
+	int i;
+	for(i=1;i<=n;i++)
+	{
+		scanf("%d",&h[i].data);
+		h[i].num = i;
+	}
+	insertionsort(h,n);
+	/*printf("diaodushunxuwei\n");
+	for(i=1;i<=n;i++)
+		printf("%d ",h[i].num);*/
+	schedule(h,n);
+	float res = ((float)h[n].data)/((float)4);
+	printf("pinjunzuixiaoyunxingshijianwei %f",res);
+	return 0;
+
+}
