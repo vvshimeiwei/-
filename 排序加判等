@@ -1,0 +1,91 @@
+#include<stdio.h>
+
+int PARENT(int i)
+{
+    //int i;
+    return i/2;
+}
+int LEFT(int i){
+    return 2*i;
+}
+int RIGHT(int i){
+    return 2*i+1;
+};
+int MAXHEAPIFY(int *A,int i,int heapsize)
+{
+    int l,r,largest,temp;
+    l=LEFT(i);
+    r=RIGHT(i);
+    largest = i;
+    if(l<=heapsize && A[l]>A[i])
+    {
+        largest = l;
+    }
+    else
+    {
+        largest = i;
+    }
+    if(r<=heapsize && A[r]>A[largest])
+    largest = r;
+    if(largest != i){
+        temp = A[largest];
+        A[largest] = A[i];
+        A[i] = temp;
+        MAXHEAPIFY(A,largest,heapsize);
+    }
+}
+int BUILDMAXHEAP(int *A,int heapsize)
+{
+    //heapsize = n;
+    for(int i = heapsize/2;i>=1;i--)
+    {
+        MAXHEAPIFY(A,i,heapsize);
+    }
+}
+int HEAPSORT(int *A,int heapsize)
+{
+    //printf("hello\n");
+    int temp;
+    for(int i =heapsize;i>=2;i--)
+    {
+        temp = A[1];
+        A[1] = A[i];
+        A[i] = temp;
+        heapsize = heapsize -1;
+        MAXHEAPIFY(A,1,heapsize);
+    }
+}
+int main()
+{
+    int a[100],i,j,n,x;
+    scanf("%d",&x);
+    scanf("%d",&n);
+    //heapsize=n;
+    for(i=1;i<=n;i++)
+    scanf("%d",&a[i]);
+    //BUILD-MAX-HEAP(A);
+    BUILDMAXHEAP(a,n);
+    /*for(i=1;i<=n;i++)
+    {
+        printf("%d ",a[i]);
+    }
+    printf("\n");*/
+    HEAPSORT(a,n);
+    for(i=1;i<=n;i++)
+    {
+        printf("%d ",a[i]);
+    }
+    for(i=1,j=n;i != j;){
+        if((a[i]+a[j])==x)
+        {
+            printf("yes\n");break;
+        }
+        if((a[i]+a[j])>x)
+            j--;
+        if((a[i]+a[j])<x)
+            i++;
+    }
+    if(i==j)
+        printf("no");
+    return 0;
+}
