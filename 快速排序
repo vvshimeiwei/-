@@ -1,138 +1,46 @@
-//输入要排序的n个数
+//输入n的值
 //分别输入n个数的值
 #include<stdio.h>
-
-int PARENT(int i)
+int PARTITION(int *A,int p,int r)
 {
-    //int i;
-    return i/2;
+    int x = A[r];
+    int i = p -1;
+    for(int j = p;j<=r-1;j++)
+    {
+        if(A[j] <= x)
+        {
+            i = i + 1;
+            int temp = A[i];
+            A[i] = A[j];
+            A[j] = temp;
+        }
+    }
+    int t = A[r];
+    A[r] = A[i+1];
+    A[i+1]  = t;
+    return i+1;
 }
-int LEFT(int i){
-    return 2*i;
-}
-int RIGHT(int i){
-    return 2*i+1;
-};
-int MAXHEAPIFY(int *A,int i,int heapsize)
+int QUICKSORT(int *A,int p,int r)
 {
-    int l,r,largest,temp;
-    l=LEFT(i);
-    r=RIGHT(i);
-    largest = i;
-    if(l<=heapsize && A[l]>A[i])
+    if(p<r)
     {
-        largest = l;
-    }
-    else
-    {
-        largest = i;
-    }
-    if(r<=heapsize && A[r]>A[largest])
-    largest = r;
-    if(largest != i){
-        temp = A[largest];
-        A[largest] = A[i];
-        A[i] = temp;
-        MAXHEAPIFY(A,largest,heapsize);
+        int q = PARTITION(A,p,r);
+        QUICKSORT(A,p,q-1);
+        QUICKSORT(A,q+1,r);
     }
 }
-int BUILDMAXHEAP(int *A,int heapsize)
-{
-    //heapsize = n;
-    for(int i = heapsize/2;i>=1;i--)
-    {
-        MAXHEAPIFY(A,i,heapsize);
-    }
-}
-int HEAPSORT(int *A,int heapsize)
-{
-    //printf("hello\n");
-    BUILDMAXHEAP(A,heapsize);
-    int temp;
-    for(int i =heapsize;i>=2;i--)
-    {
-        temp = A[1];
-        A[1] = A[i];
-        A[i] = temp;
-        heapsize = heapsize -1;
-        MAXHEAPIFY(A,1,heapsize);
-    }
-}
-int HEAPMAXIMUM(int * A)
-{
-    return A[1];
-}
-int HEAPEXTRACTMAX(int * A,int heapsize)
-{
-    if(heapsize<1)
-    printf("heap underflow");
-    int max = A[1];
-    A[1] = A[heapsize];
-    heapsize = heapsize -1;
-    MAXHEAPIFY(A,1,heapsize);
-    return max;
-}
-int HEAPINCREASEKEY(int *A,int i,int key)
-{
-    if(key < A[i])
-    printf("new key is smaller than current key");
-    A[i] = key;
-    while(i > 1 && A[PARENT(i)] < A[i])
-    {
-        int temp = A[i];
-        A[i] = A[PARENT(i)];
-        A[PARENT(i)] = temp;
-        i = PARENT(i);
-     }
-}
-int MAXHEAPINSERT(int *A,int key,int heapsize)
-{
-    heapsize = heapsize + 1;
-    A[heapsize] = -99999;
-    HEAPINCREASEKEY(A,heapsize,key);
-}
-int main()
-{
-    int a[100],i,j,n;
-    //scanf("%d",&x);
+int main(){
+    int n,i,a[100];
     scanf("%d",&n);
-    //heapsize=n;
-    for(i=1;i<=n;i++)
-    scanf("%d",&a[i]);
-    //BUILD-MAX-HEAP(A);
-    BUILDMAXHEAP(a,n);
-    //HEAPSORT(a,n);
-    /*printf("after heapsort is\n");
-    for(i=1;i<=n;i++)
+    for(i = 1;i <= n;i++)
     {
-        printf("%d ",a[i]);
+        scanf("%d",&a[i]);
     }
-    printf("\n");*/
-    int max = HEAPMAXIMUM(a);
-    printf("heapmaximum is %d\n",max);
-    int m = HEAPEXTRACTMAX(a,n);
-    printf("heapmaximum is %d\n",m);
-    printf("after heapextractmax is\n");
-    HEAPSORT(a,n-1);
-    for(i=1;i<n;i++)
-    {
-        printf("%d ",a[i]);
-    }
-    printf("\n");
-    HEAPINCREASEKEY(a,2,999);
-    printf("after heapincreasekey is\n");
-    HEAPSORT(a,n-1);
-    for(i=1;i<n;i++)
-    {
-        printf("%d ",a[i]);
-    }
-    printf("\n");
-    MAXHEAPINSERT(a,666,n-1);
-    printf("after maxheapinsert is\n");
-    HEAPSORT(a,n);
-    for(i=1;i<=n;i++)
+    QUICKSORT(a,1,n);
+    for(i = 1;i <= n;i++)
     {
         printf("%d ",a[i]);
     }
     return 0;
 }
+
