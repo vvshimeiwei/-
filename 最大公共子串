@@ -1,0 +1,50 @@
+#include<stdio.h>
+#include<string.h>
+int c[30][30];
+void lcs(char * X, int xlen, char * Y, int ylen)
+{
+    int maxlen = 0;
+    int index = 0;
+    for(int i = 0; i < xlen; ++i)
+    {
+        for(int j = 0; j < ylen; ++j)
+        {
+            if(X[i] == Y[j])
+            {
+                if(i && j)
+                {
+                    c[i][j] = c[i-1][j-1] + 1;
+                }
+                if(i == 0 || j == 0)
+                {
+                    c[i][j] = 1;
+                }
+                if(c[i][j] > maxlen)
+                {
+                    maxlen = c[i][j];
+                    index = i + 1 - maxlen;
+                }
+            }
+        }
+    }
+    if(maxlen == 0)
+    {
+        printf("没有相同子串\n");
+        return;
+    }
+    printf("最大公共子串长度为 %d\n",maxlen);
+
+    int s = index;
+    while(maxlen--)
+    {
+        printf("%c",X[s++]);
+    }
+    printf("\n");
+}
+int main()
+{
+    char X[] = "xzyzzyx";
+    char Y[] = "zxyyzxz";
+    lcs(X,strlen(X),Y,strlen(Y));
+
+}
