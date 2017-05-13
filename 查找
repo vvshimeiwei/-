@@ -1,0 +1,51 @@
+#include<stdio.h>
+int main()
+{
+	int m,n,i,j,k;
+	printf("please input the numbers of two sorted list\n");
+	scanf("%d %d",&m,&n);
+	printf("please input the number of k\n");
+	scanf("%d",&k);
+	int a[m+1],b[n+1];
+	for(i=1;i<=m;i++)
+		scanf("%d",&a[i]);
+	for(i=1;i<=n;i++)
+		scanf("%d",&b[i]);
+	int low = 1;
+	int high = m;
+	while(low<=high && low>0 && high<m+1)
+	{
+		int mid = (low+high)/2;
+		if(a[mid]<b[k-mid+1] && a[mid]>b[k-mid])
+		{
+			printf("the kth largest number is %d\n",a[mid]);
+			return 0;
+		}
+		else if(a[mid]<b[k-mid])
+		{
+			low = mid;
+		}
+		else if(a[mid]>b[k-mid+1])
+		{
+			high = mid;
+		}
+	}
+	high = n;
+	while(low<=high && low>0 && high<n+1)
+	{
+		int mid = (low+high)/2;
+		if(b[mid]<a[k-mid+1] && b[mid]>a[k-mid])
+		{
+			printf("the kth largest number is %d\n",b[mid]);
+			return 0;
+		}
+		else if(b[mid]<a[k-mid])
+		{
+			low = mid;
+		}
+		else if(b[mid]>a[k-mid+1])
+		{
+			high = mid;
+		}
+	}
+}
