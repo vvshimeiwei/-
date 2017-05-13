@@ -1,0 +1,92 @@
+#include<stdio.h>
+int extractmax(float s[],int n)
+{
+	float max = s[1];
+	int n1=n+1;
+	int res=1;
+	for(int i =2;i<n1;i++)
+	{
+		if(s[i]>max)
+		{
+			max = s[i];
+            res = i;
+		}
+	}
+	s[res] = 0;
+	return res;
+}
+int greedyfractional(int p[],int w[],int W,float x[],int n,float s[])
+{
+	int c = W;
+	int n2=n+1;
+	int location;
+	for(int i = 1;i<n2;i++)
+	{
+		location = extractmax(s,n2);
+		//printf("%d\n",location);
+		if(w[location] <= c)
+		{
+			x[location] = 1;
+			c = c - w[location];
+		}
+		else
+			break;
+	}
+	//printf("%d %d\n",c,w[location]);
+	if(location<=n2)
+    {
+        x[location] = ((float)c)/((float)w[location]);
+        //printf("%f\n",x[location]);
+    }
+
+	//return x;
+}
+int knapsack01(int p[],int w[],int W,int n)
+{
+	int c[n+1][W+1];
+	for(int i=0;i<W+1;i++)
+		c[0][i] = 0;
+	for(int i=1;i<n+1;i++){
+		c[i][0] = 0;
+		for(int j=1;j<W+1;j++)
+		{
+			if(w[i]<=j)
+			{
+				if(p[i]+c[i-1][j-w[i]] > c[i-1][j])
+					c[i][j] = p[i]+c[i-1][j-w[i]];
+				else
+					c[i][j] = c[i-1][j];
+			}
+			else
+				c[i][j] = c[i-1][j];
+		}
+	}
+	return c[n][W];
+}
+int main()
+{
+	int p[] = {0,20,30,65,40,60};
+	int w[] = {0,10,20,30,40,50};
+	float s[] = {0,2,1.5,2.1,1,1.2};
+	int n = 5;
+	int W = 100;
+	float x[5];
+	float sumax=0;
+	for(int i=1;i<=n;i++)
+		x[i] = 0;
+    greedyfractional(p,w,W,x,n,s);
+	for(int i = 1;i<=n;i++)
+		printf("%f ",x[i]);
+	printf("\n");
+	for(int i=1;i<=n;i++)
+	{
+		if(x[i] != 0)
+		{
+			sumax = sumax+x[i]*p[i];
+		}
+	}
+	printf("fractional knapsack zuidadejiazhishi %f\n",sumax);
+	//return 0;
+	int result = knapsack01(p,w,W,n);
+	printf("01knapsack de zuidajiazhishi %d",result);
+}
